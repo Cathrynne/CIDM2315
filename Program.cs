@@ -1,111 +1,92 @@
-﻿using System;
-
-namespace Homework5
+﻿namespace Homework6
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // --- Question 1: Find the Largest of Two Numbers ---
-            Console.WriteLine("Welcome to Homework5!");
-            Console.WriteLine("Let's start with Question 1: Finding the largest of two numbers.");
-            int largestOfTwo = Q1_method();
-            Console.WriteLine($"Great! The largest number you entered is: {largestOfTwo}");
-            Console.WriteLine();
+            // Creating two professors with their names, subjects, and salaries
+            Professor alice = new Professor("Alice", "Java", 9000);
+            Professor bob = new Professor("Bob", "Math", 8000);
 
-            // --- Question 2: Find the Largest of Four Numbers using Q1_method ---
-            Console.WriteLine("Now, onto Question 2: Finding the largest among four numbers.");
-            int largestOfFour = Q2_method();
-            Console.WriteLine($"Awesome! The largest number among your four entries is: {largestOfFour}");
-            Console.WriteLine();
+            // Creating two students with their names, enrolled courses, and grades
+            Student lisa = new Student("Lisa", "Java", 90);
+            Student tom = new Student("Tom", "Math", 80);
 
-            // --- Question 3: Create an Account ---
-            Console.WriteLine("Finally, let's create an account. Please follow the instructions below:");
-            createAccount();
+            // Displaying professor details
+            Console.WriteLine($"Professor {alice.Name} teaches {alice.Subject}, and the salary is: ${alice.GetSalary()}.");
+            Console.WriteLine($"Professor {bob.Name} teaches {bob.Subject}, and the salary is: ${bob.GetSalary()}.");
 
-            // End of Homework5 demonstration.
-            Console.WriteLine("Thank you for using Homework5! Have a great day!");
+            // Displaying student details
+            Console.WriteLine($"Student {lisa.Name} is enrolled in {lisa.Course} and has a grade of {lisa.GetGrade()}.");
+            Console.WriteLine($"Student {tom.Name} is enrolled in {tom.Course} and has a grade of {tom.GetGrade()}.");
+
+            // Calculating and displaying the salary difference
+            double salaryDifference = alice.GetSalary() - bob.GetSalary();
+            Console.WriteLine($"The salary difference between {alice.Name} and {bob.Name} is: ${salaryDifference}.");
+
+            // Calculating and displaying the total grade of both students
+            double totalGrade = lisa.GetGrade() + tom.GetGrade();
+            Console.WriteLine($"The total grade of {lisa.Name} and {tom.Name} is: {totalGrade}.");
+        }
+    }
+
+    class Professor
+    {
+        private string name;
+        private string subject;
+        private double salary;
+
+        // Constructor to initialize a professor's details
+        public Professor(string name, string subject, double salary)
+        {
+            this.name = name;
+            this.subject = subject;
+            this.salary = salary;
         }
 
-        // Q1_method: Reads two integers from the keyboard and returns the larger one.
-        static int Q1_method()
-        {
-            Console.Write("Please enter the first number: ");
-            int num1 = int.Parse(Console.ReadLine());
-            Console.Write("Please enter the second number: ");
-            int num2 = int.Parse(Console.ReadLine());
+        // Properties for name and subject
+        public string Name { get { return name; } }
+        public string Subject { get { return subject; } }
 
-            // Compare the two numbers using a helper method.
-            return GetMax(num1, num2);
+        // Methods to manage salary
+        public void SetSalary(double newSalary)
+        {
+            salary = newSalary;
         }
 
-        // Helper method to compare two integers and return the larger.
-        static int GetMax(int a, int b)
+        public double GetSalary()
         {
-            return (a > b) ? a : b;
+            return salary;
+        }
+    }
+
+    class Student
+    {
+        private string name;
+        private string course;
+        private double grade;
+
+        // Constructor to initialize a student's details
+        public Student(string name, string course, double grade)
+        {
+            this.name = name;
+            this.course = course;
+            this.grade = grade;
         }
 
-        // Q2_method: Reads four integers from the keyboard and returns the largest one.
-        // It uses the GetMax method (from Q1) to make the comparisons.
-        static int Q2_method()
+        // Properties for name and enrolled course
+        public string Name { get { return name; } }
+        public string Course { get { return course; } }
+
+        // Methods to manage grades
+        public void SetGrade(double newGrade)
         {
-            Console.Write("Enter the first number: ");
-            int a = int.Parse(Console.ReadLine());
-            Console.Write("Enter the second number: ");
-            int b = int.Parse(Console.ReadLine());
-            Console.Write("Enter the third number: ");
-            int c = int.Parse(Console.ReadLine());
-            Console.Write("Enter the fourth number: ");
-            int d = int.Parse(Console.ReadLine());
-
-            // First, get the max of the first pair and the second pair.
-            int maxPair1 = GetMax(a, b);
-            int maxPair2 = GetMax(c, d);
-
-            // Then, compare the two results to get the overall largest.
-            return GetMax(maxPair1, maxPair2);
+            grade = newGrade;
         }
 
-        // checkAge: Determines if the user is at least 18 years old based on their birth year.
-        static bool checkAge(int birthYear)
+        public double GetGrade()
         {
-            int currentYear = DateTime.Now.Year;
-            int age = currentYear - birthYear;
-            return age >= 18;
-        }
-
-        // createAccount: Guides the user through creating an account.
-        // It asks for username, password (twice), and birth year, then checks if the user is old enough
-        // and if the passwords match before confirming account creation.
-        static void createAccount()
-        {
-            Console.Write("Enter a username: ");
-            string username = Console.ReadLine();
-
-            Console.Write("Enter a password: ");
-            string password = Console.ReadLine();
-
-            Console.Write("Please re-enter your password: ");
-            string confirmPassword = Console.ReadLine();
-
-            Console.Write("Enter your birth year (e.g., 1995): ");
-            int birthYear = int.Parse(Console.ReadLine());
-
-            if (checkAge(birthYear))
-            {
-                if (password == confirmPassword)
-                {
-                    Console.WriteLine("Congratulations! Your account has been created successfully.");
-                }
-                else
-                {
-                    Console.WriteLine("Oops! The passwords did not match. Please try again.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Sorry, you must be at least 18 years old to create an account.");
-            }
+            return grade;
         }
     }
 }
