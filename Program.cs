@@ -1,92 +1,80 @@
-﻿namespace Homework6
+﻿// Homework7.cs
+using System;
+
+namespace Homework7
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Creating two professors with their names, subjects, and salaries
-            Professor alice = new Professor("Alice", "Java", 9000);
-            Professor bob = new Professor("Bob", "Math", 8000);
+            Console.WriteLine("Creating customers...\n");
 
-            // Creating two students with their names, enrolled courses, and grades
-            Student lisa = new Student("Lisa", "Java", 90);
-            Student tom = new Student("Tom", "Math", 80);
+            // Create two customers
+            Customer customer1 = new Customer(110, "Alice", 28);
+            Customer customer2 = new Customer(111, "Bob", 30);
 
-            // Displaying professor details
-            Console.WriteLine($"Professor {alice.Name} teaches {alice.Subject}, and the salary is: ${alice.GetSalary()}.");
-            Console.WriteLine($"Professor {bob.Name} teaches {bob.Subject}, and the salary is: ${bob.GetSalary()}.");
+            Console.WriteLine("Initial customer info:");
+            customer1.PrintCusInfo();
+            customer2.PrintCusInfo();
 
-            // Displaying student details
-            Console.WriteLine($"Student {lisa.Name} is enrolled in {lisa.Course} and has a grade of {lisa.GetGrade()}.");
-            Console.WriteLine($"Student {tom.Name} is enrolled in {tom.Course} and has a grade of {tom.GetGrade()}.");
+            Console.WriteLine("\nUpdating customer IDs...\n");
 
-            // Calculating and displaying the salary difference
-            double salaryDifference = alice.GetSalary() - bob.GetSalary();
-            Console.WriteLine($"The salary difference between {alice.Name} and {bob.Name} is: ${salaryDifference}.");
+            // Update their IDs
+            customer1.ChangeID(220);
+            customer2.ChangeID(221);
 
-            // Calculating and displaying the total grade of both students
-            double totalGrade = lisa.GetGrade() + tom.GetGrade();
-            Console.WriteLine($"The total grade of {lisa.Name} and {tom.Name} is: {totalGrade}.");
+            Console.WriteLine("Updated customer info:");
+            customer1.PrintCusInfo();
+            customer2.PrintCusInfo();
+
+            Console.WriteLine("\nComparing ages...");
+            customer1.CompareAge(customer2);
+
+            Console.WriteLine("\nDone.");
         }
     }
 
-    class Professor
+    class Customer
     {
-        private string name;
-        private string subject;
-        private double salary;
+        private int cus_id;
+        public string cus_name;
+        public int cus_age;
 
-        // Constructor to initialize a professor's details
-        public Professor(string name, string subject, double salary)
+        // Constructor
+        public Customer(int id, string name, int age)
         {
-            this.name = name;
-            this.subject = subject;
-            this.salary = salary;
+            cus_id = id;
+            cus_name = name;
+            cus_age = age;
         }
 
-        // Properties for name and subject
-        public string Name { get { return name; } }
-        public string Subject { get { return subject; } }
-
-        // Methods to manage salary
-        public void SetSalary(double newSalary)
+        // Method to update the customer's ID
+        public void ChangeID(int new_id)
         {
-            salary = newSalary;
+            cus_id = new_id;
         }
 
-        public double GetSalary()
+        // Method to display customer info
+        public void PrintCusInfo()
         {
-            return salary;
-        }
-    }
-
-    class Student
-    {
-        private string name;
-        private string course;
-        private double grade;
-
-        // Constructor to initialize a student's details
-        public Student(string name, string course, double grade)
-        {
-            this.name = name;
-            this.course = course;
-            this.grade = grade;
+            Console.WriteLine($"Customer ID: {cus_id}, Name: {cus_name}, Age: {cus_age}");
         }
 
-        // Properties for name and enrolled course
-        public string Name { get { return name; } }
-        public string Course { get { return course; } }
-
-        // Methods to manage grades
-        public void SetGrade(double newGrade)
+        // Method to compare age and print who is older
+        public void CompareAge(Customer otherCustomer)
         {
-            grade = newGrade;
-        }
-
-        public double GetGrade()
-        {
-            return grade;
+            if (this.cus_age > otherCustomer.cus_age)
+            {
+                Console.WriteLine($"{this.cus_name} is older.");
+            }
+            else if (this.cus_age < otherCustomer.cus_age)
+            {
+                Console.WriteLine($"{otherCustomer.cus_name} is older.");
+            }
+            else
+            {
+                Console.WriteLine($"{this.cus_name} and {otherCustomer.cus_name} are the same age.");
+            }
         }
     }
 }
