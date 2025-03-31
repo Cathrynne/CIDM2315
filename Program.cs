@@ -1,80 +1,87 @@
-﻿// Homework7.cs
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Homework7
+namespace Homework9
 {
+    // Student class holds student ID and name
+    class Student
+    {
+        private int studentID;
+        private string studentName;
+
+        // Shared list to keep track of all students
+        public static List<Student> studentList = new List<Student>();
+
+        // Constructor adds each new student to the list
+        public Student(int id, string name)
+        {
+            studentID = id;
+            studentName = name;
+            studentList.Add(this);
+        }
+
+        // Prints basic info about the student
+        public void PrintInfo()
+        {
+            Console.WriteLine($"Student ID: {studentID} | Name: {studentName}");
+        }
+
+        // Helper to get student name
+        public string GetName()
+        {
+            return studentName;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Creating customers...\n");
+            Console.WriteLine("=== Welcome to the Student Gradebook ===\n");
 
-            // Create two customers
-            Customer customer1 = new Customer(110, "Alice", 28);
-            Customer customer2 = new Customer(111, "Bob", 30);
+            // Step 1: Create 4 students
+            Student s1 = new Student(111, "Alice");
+            Student s2 = new Student(222, "Bob");
+            Student s3 = new Student(333, "Cathy");
+            Student s4 = new Student(444, "David");
 
-            Console.WriteLine("Initial customer info:");
-            customer1.PrintCusInfo();
-            customer2.PrintCusInfo();
-
-            Console.WriteLine("\nUpdating customer IDs...\n");
-
-            // Update their IDs
-            customer1.ChangeID(220);
-            customer2.ChangeID(221);
-
-            Console.WriteLine("Updated customer info:");
-            customer1.PrintCusInfo();
-            customer2.PrintCusInfo();
-
-            Console.WriteLine("\nComparing ages...");
-            customer1.CompareAge(customer2);
-
-            Console.WriteLine("\nDone.");
-        }
-    }
-
-    class Customer
-    {
-        private int cus_id;
-        public string cus_name;
-        public int cus_age;
-
-        // Constructor
-        public Customer(int id, string name, int age)
-        {
-            cus_id = id;
-            cus_name = name;
-            cus_age = age;
-        }
-
-        // Method to update the customer's ID
-        public void ChangeID(int new_id)
-        {
-            cus_id = new_id;
-        }
-
-        // Method to display customer info
-        public void PrintCusInfo()
-        {
-            Console.WriteLine($"Customer ID: {cus_id}, Name: {cus_name}, Age: {cus_age}");
-        }
-
-        // Method to compare age and print who is older
-        public void CompareAge(Customer otherCustomer)
-        {
-            if (this.cus_age > otherCustomer.cus_age)
+            // Step 2: Create gradebook dictionary
+            Dictionary<string, double> gradebook = new Dictionary<string, double>()
             {
-                Console.WriteLine($"{this.cus_name} is older.");
-            }
-            else if (this.cus_age < otherCustomer.cus_age)
+                { "Alice", 4.0 },
+                { "Bob", 3.6 },
+                { "Cathy", 2.5 },
+                { "David", 1.8 }
+            };
+
+            // Step 3: Check for Tom, add him if not found
+            if (!gradebook.ContainsKey("Tom"))
             {
-                Console.WriteLine($"{otherCustomer.cus_name} is older.");
+                Console.WriteLine("Tom not found in gradebook. Adding Tom with GPA 3.3.\n");
+                gradebook.Add("Tom", 3.3);
             }
-            else
+
+            // Step 4: Calculate average GPA
+            double totalGPA = gradebook.Values.Sum();
+            double averageGPA = totalGPA / gradebook.Count;
+
+            Console.WriteLine($"Average GPA of all students: {averageGPA:F2}\n");
+
+            // Step 5: Show students with GPA above average
+            Console.WriteLine("Students with GPA above average:\n");
+
+            foreach (Student student in Student.studentList)
             {
-                Console.WriteLine($"{this.cus_name} and {otherCustomer.cus_name} are the same age.");
+                string name = student.GetName();
+                if (gradebook.ContainsKey(name) && gradebook[name] > averageGPA)
+                {
+                    student.PrintInfo();
+                    Console.WriteLine($"GPA: {gradebook[name]:F2}\n");
+                }
             }
+
+            Console.WriteLine("=== End of Program ===");
         }
     }
 }
