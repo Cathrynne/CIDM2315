@@ -1,87 +1,108 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Homework9
+class Program
 {
-    // Student class holds student ID and name
-    class Student
+    static void Main(string[] args)
     {
-        private int studentID;
-        private string studentName;
+        // Creating customer objects
+        Customer cus1 = new Customer("Alice", 33, "Amarillo", 198.5);
+        Customer cus2 = new Customer("Bob", 23, "Amarillo", 226);
+        Customer cus3 = new Customer("Cathy", 45, "Amarillo", 89.0);
+        Customer cus4 = new Customer("David", 58, "Amarillo", 198.5);
+        Customer cus5 = new Customer("Jack", 28, "Canyon", 561.6);
+        Customer cus6 = new Customer("Tom", 36, "Canyon", 98.4);
+        Customer cus7 = new Customer("Tony", 24, "Canyon", 18.5);
+        Customer cus8 = new Customer("Sam", 35, "Canyon", 228.3);
 
-        // Shared list to keep track of all students
-        public static List<Student> studentList = new List<Student>();
+        Customer[] customer_list = { cus1, cus2, cus3, cus4, cus5, cus6, cus7, cus8 };
 
-        // Constructor adds each new student to the list
-        public Student(int id, string name)
+        Console.WriteLine("Customer Report\n");
+
+        TotalCredits(customer_list);
+        Console.WriteLine();
+
+        AmarilloAverageAge(customer_list);
+        Console.WriteLine();
+
+        CanyonAge(customer_list);
+
+        Console.WriteLine("\nEnd of report.");
+    }
+
+    // Q1: Calculate and print total credit
+    public static void TotalCredits(Customer[] customer_list)
+    {
+        double total = 0;
+
+        foreach (Customer c in customer_list)
         {
-            studentID = id;
-            studentName = name;
-            studentList.Add(this);
+            total += c.customerCredit;
         }
 
-        // Prints basic info about the student
-        public void PrintInfo()
+        Console.WriteLine("Total credit of all customers: $" + total.ToString("F2"));
+    }
+
+    // Q2: Calculate and print average age of Amarillo customers
+    public static void AmarilloAverageAge(Customer[] customer_list)
+    {
+        int totalAge = 0;
+        int count = 0;
+
+        foreach (Customer c in customer_list)
         {
-            Console.WriteLine($"Student ID: {studentID} | Name: {studentName}");
+            if (c.customerCity == "Amarillo")
+            {
+                totalAge += c.customerAge;
+                count++;
+            }
         }
 
-        // Helper to get student name
-        public string GetName()
+        if (count > 0)
         {
-            return studentName;
+            double average = (double)totalAge / count;
+            Console.WriteLine("Average age of Amarillo customers: " + average.ToString("F1") + " years");
+        }
+        else
+        {
+            Console.WriteLine("No customers found in Amarillo.");
         }
     }
 
-    class Program
+    // Q3: Print names of Canyon customers over age 30
+    public static void CanyonAge(Customer[] customer_list)
     {
-        static void Main(string[] args)
+        Console.WriteLine("Customers in Canyon over 30 years old:");
+
+        bool found = false;
+        foreach (Customer c in customer_list)
         {
-            Console.WriteLine("=== Welcome to the Student Gradebook ===\n");
-
-            // Step 1: Create 4 students
-            Student s1 = new Student(111, "Alice");
-            Student s2 = new Student(222, "Bob");
-            Student s3 = new Student(333, "Cathy");
-            Student s4 = new Student(444, "David");
-
-            // Step 2: Create gradebook dictionary
-            Dictionary<string, double> gradebook = new Dictionary<string, double>()
+            if (c.customerCity == "Canyon" && c.customerAge > 30)
             {
-                { "Alice", 4.0 },
-                { "Bob", 3.6 },
-                { "Cathy", 2.5 },
-                { "David", 1.8 }
-            };
-
-            // Step 3: Check for Tom, add him if not found
-            if (!gradebook.ContainsKey("Tom"))
-            {
-                Console.WriteLine("Tom not found in gradebook. Adding Tom with GPA 3.3.\n");
-                gradebook.Add("Tom", 3.3);
+                Console.WriteLine("- " + c.customerName + " (" + c.customerAge + " years old)");
+                found = true;
             }
-
-            // Step 4: Calculate average GPA
-            double totalGPA = gradebook.Values.Sum();
-            double averageGPA = totalGPA / gradebook.Count;
-
-            Console.WriteLine($"Average GPA of all students: {averageGPA:F2}\n");
-
-            // Step 5: Show students with GPA above average
-            Console.WriteLine("Students with GPA above average:\n");
-
-            foreach (Student student in Student.studentList)
-            {
-                string name = student.GetName();
-                if (gradebook.ContainsKey(name) && gradebook[name] > averageGPA)
-                {
-                    student.PrintInfo();
-                    Console.WriteLine($"GPA: {gradebook[name]:F2}\n");
-                }
-            }
-
-            Console.WriteLine("=== End of Program ===");
         }
+
+        if (!found)
+        {
+            Console.WriteLine("No Canyon customers over 30 found.");
+        }
+    }
+}
+
+// Q0: Customer class
+class Customer
+{
+    public string customerName;
+    public int customerAge;
+    public string customerCity;
+    public double customerCredit;
+
+    public Customer(string customerName, int customerAge, string customerCity, double customerCredit)
+    {
+        this.customerName = customerName;
+        this.customerAge = customerAge;
+        this.customerCity = customerCity;
+        this.customerCredit = customerCredit;
     }
 }
